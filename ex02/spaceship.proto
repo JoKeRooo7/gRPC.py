@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+enum Alignment {
+  ALLY = 0;
+  ENEMY = 1;
+}
+
+enum ShipClass {
+  CORVETTE = 0;
+  FRIGATE = 1;
+  CRUISER = 2;
+  DESTROYER = 3;
+  CARRIER = 4;
+  DREADNOUGHT = 5;
+}
+
+message Officer {
+  string first_name = 1;
+  string last_name = 2;
+  string rank = 3;
+}
+
+message Coordinates {
+  repeated float coordinates = 1;
+}
+
+message Spaceship {
+  Alignment alignment = 1;
+  string name = 2;
+  ShipClass class_ = 3;
+  float length = 4;
+  int32 crew_size = 5;
+  bool armed = 6;
+  repeated Officer officers = 7;
+}
+
+service SpaceshipService {
+  rpc get_spaceships(Coordinates) returns (stream Spaceship);
+}
+
+// python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. spaceship.proto
